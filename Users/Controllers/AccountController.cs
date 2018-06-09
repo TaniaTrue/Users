@@ -30,9 +30,29 @@ namespace Users.Controllers
             {
                 AppUser user = await UserManager.FindAsync(details.Name,
    details.Password);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Invalid name or password.");
+                }
+                else
+                {
+                    ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    AuthManager.SignOut();
+                    AuthManager.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
+                    return Redirect(returnUrl);
+                }
 
             }
+            ViewBag.returnUrl = returnUrl;
             return View(details);
+        }
+
+        private IAuthenticationManager AuthManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
         }
 
         private AppUserManager UserManager
