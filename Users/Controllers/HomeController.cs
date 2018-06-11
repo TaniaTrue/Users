@@ -49,6 +49,7 @@ namespace Users.Controllers
         {
             AppUser user = CurrentUser;
             user.City = city;
+            user.SetCountryFromCity(city);
             await UserManager.UpdateAsync(user);
             return View(user);
         }

@@ -42,9 +42,12 @@ namespace Users.Migrations
             }
             foreach (AppUser dbUser in userMgr.Users)
             {
-                dbUser.City = Cities.PARIS;
+                if (dbUser.Country == Countries.NONE)
+                {
+                    dbUser.SetCountryFromCity(dbUser.City);
+                }
             }
-            context.SaveChanges();
+                context.SaveChanges();
         }
     }
 }
