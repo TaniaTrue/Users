@@ -17,6 +17,10 @@ namespace Users.Controllers
         {
             return View(RoleManager.Roles);
         }
+        public ActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<ActionResult> Create([Required]string name)
