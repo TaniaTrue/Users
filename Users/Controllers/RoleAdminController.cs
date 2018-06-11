@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Users.Infrastructure;
 using Users.Models;
+using System.Collections.Generic;
 
 namespace Users.Controllers
 {
@@ -60,6 +61,48 @@ namespace Users.Controllers
             {
                 return View("Error", new string[] { "Role Not Found" });
             }
+        }
+
+        public async Task<ActionResult> Edit(string id)
+        {
+            AppRole role = await RoleManager.FindByIdAsync(id);
+            string[] memberIds = role.Users.Select(x => x.UserId).ToArray();
+            IEnumerable<AppUser> members = UserManager.Users.Where(x => memberIds.Any(y => y == x.Id));
+            IEnumerable<AppUser> nonMembers = UserManager.Users.Except(members);
+            return View(new RoleEditModel
+            {
+                Role = role,
+                Members = members,
+                NonMembers = nonMembers
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(RoleModificationModel model)
+        {
+            IdentityResult result;
+            if (ModelState.IsValid)
+            {
+                foreach (string userId in model.IdsToAdd ?? new string[] { })
+                {
+                    result = await UserManager.AddToRoleAsync(userId, model.RoleName);
+                    if (!result.Succeeded)
+                    {
+                        return View("Error", result.Errors);
+                    }
+                }
+                foreach (string userId in model.IdsToDelete ?? new string[] { })
+                {
+                    result = await UserManager.RemoveFromRoleAsync(userId,
+                    model.RoleName);
+                    if (!result.Succeeded)
+                    {
+                        return View("Error", result.Errors);
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return View("Error", new string[] { "Role Not Found" });
         }
 
         private AppRoleManager RoleManager
