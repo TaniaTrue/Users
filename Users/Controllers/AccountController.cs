@@ -17,6 +17,10 @@ namespace Users.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return View("Error", new string[] { "Access Denied" });
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

@@ -35,5 +35,6 @@ namespace Users.Infrastructure
             };
             return manager;
         }
+
     }
 }

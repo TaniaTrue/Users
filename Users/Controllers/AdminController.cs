@@ -13,6 +13,7 @@ namespace Users.Controllers
 {
     public class AdminController : Controller
     {
+        [Authorize(Roles = "Administrators")]
         public ActionResult Index()
         {
             return View(UserManager.Users);

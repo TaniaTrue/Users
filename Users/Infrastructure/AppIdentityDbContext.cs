@@ -5,6 +5,7 @@ using System.Web;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Users.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Users.Infrastructure
 {
@@ -26,15 +27,9 @@ namespace Users.Infrastructure
 
     public class IdentityDbInit : DropCreateDatabaseIfModelChanges<AppIdentityDbContext>
     {
-        protected override void Seed(AppIdentityDbContext context)
-        {
-            PerformInitialSetup(context);
-            base.Seed(context);
-        }
-
-        public void PerformInitialSetup(AppIdentityDbContext context)
-        {
-            // initial configuration will go here
-        }
+//        NullDatabaseInitializer<AppIdentit
+//yDbContext>, which prevents the schema from being altered.
     }
+
 }
+//PerformInitialSetup method is called before the OWIN configuration is complete.I
