@@ -28,11 +28,11 @@ namespace Users.Infrastructure
                 RequireLowercase = true,
                 RequireUppercase = true
             };
-            manager.UserValidator = new CustomUserValidator(manager)
-            {
-                AllowOnlyAlphanumericUserNames = true,
-                RequireUniqueEmail = true
-            };
+            //manager.UserValidator = new CustomUserValidator(manager)
+            //{
+            //    AllowOnlyAlphanumericUserNames = true,
+            //    RequireUniqueEmail = true
+            //};
             return manager;
         }
 

@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using Users.Infrastructure;
 using System.Web;
+using Microsoft.Owin.Security.Google;
 
 namespace Users.App_Start
 {
@@ -23,6 +24,10 @@ namespace Users.App_Start
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
             });
+
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.UseGoogleAuthentication();
+
         }
     }
 }
